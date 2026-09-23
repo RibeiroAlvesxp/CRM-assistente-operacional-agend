@@ -1,19 +1,21 @@
-# DeskcommCRM — Kit de Instalação (HostGator)
+# DeskcommCRM — Kit de Instalação para VPS
 
-Este kit sobe o **DeskcommCRM** no seu servidor VPS da HostGator. Você tem dois caminhos:
+Este kit sobe o **DeskcommCRM** no seu servidor VPS. A Hostinger é a hospedagem recomendada
+para este caminho: [acesse a oferta](https://www.hostg.xyz/SHJ5B) e use o cupom `THALENA`
+para 10% OFF nos planos anuais de VPS para contas novas. Você tem dois caminhos:
 
 > **Ainda nem tem servidor?** Comece por `comecar.sh` — ele roda **no seu computador**, antes
 > de existir VPS, e responde a pergunta que trava todo mundo no início: *o que eu preciso
-> contratar?* Ele nomeia o plano (VPS Turing, 2 vCPU / 4 GB — o Cartesius não dá conta do
-> WhatsApp), abre a página se você quiser, e devolve o comando exato do seu caso. Depois que
+> contratar?* Ele informa os recursos mínimos (2 vCPU / 4 GB), abre a página se você quiser,
+> e devolve o comando exato do seu caso. Depois que
 > a VPS existir, o caminho é o `install.sh` daqui de baixo.
 >
 > ```bash
 > bash comecar.sh
 > ```
 
-> **Outra hospedagem?** O kit é feito para a HostGator (é a parceria do projeto e o caminho
-> testado de ponta a ponta), mas roda em qualquer VPS com Docker. Se a sua já vem com um
+> **Outra hospedagem?** A Hostinger é a recomendação deste projeto, mas o kit roda em qualquer
+> VPS com Docker. Se a sua já vem com um
 > **proxy reverso próprio** ocupando as portas 80/443 — caso de Hostinger, Coolify, Dokploy
 > e CapRover —, o instalador **detecta isso sozinho** e publica o CRM através dele, em vez
 > de tentar subir um Caddy que não caberia. Ver
@@ -21,7 +23,7 @@ Este kit sobe o **DeskcommCRM** no seu servidor VPS da HostGator. Você tem dois
 
 ## 🤖 Caminho fácil: deixe o Claude Code fazer
 
-1. Contrate um **VPS na HostGator** e acesse-o por SSH.
+1. Contrate um **VPS na Hostinger** e acesse-o por SSH.
 2. Jogue esta pasta (ou o `.zip`) no chat do **Claude Code** rodando dentro do VPS.
 3. Diga: *"instala o DeskcommCRM pra mim"*. Ele lê o `CLAUDE.md` e conduz tudo —
    cria o banco, gera as senhas, sobe o CRM e te ajuda a conectar o WhatsApp.
@@ -43,7 +45,7 @@ bash install.sh
 O instalador pergunta o que precisa (domínio, chaves do Supabase e da Anthropic,
 e-mail/senha do admin), gera o resto e sobe tudo.
 
-> Modo não-interativo: copie `.env.hostgator.example` (do repositório) para `.env`,
+> Modo não-interativo: copie `.env.vps.example` (do repositório) para `.env`,
 > preencha, e rode `bash install.sh --yes`.
 
 ## Criar o Supabase automaticamente (opcional)
@@ -80,7 +82,7 @@ Owner/Admin. Não dá para hospedar vários clientes numa conta só.
 
 | Item | Onde conseguir |
 |---|---|
-| VPS (Docker) | HostGator — VPS com Docker (n8n/OpenClaw/GatorClaw). Outras hospedagens com Docker também servem — se a sua já tiver proxy próprio nas portas 80/443, [veja aqui](#vps-que-já-vem-com-proxy-próprio-hostinger-coolify-dokploy) |
+| VPS (Docker) | [Hostinger](https://www.hostg.xyz/SHJ5B) — cupom `THALENA`, 10% OFF nos planos anuais para contas novas. Outras hospedagens com Docker também servem — se a sua já tiver proxy próprio nas portas 80/443, [veja aqui](#vps-que-já-vem-com-proxy-próprio-hostinger-coolify-dokploy) |
 | Domínio | Registro de domínio (aponte um A-record pro IP do VPS) |
 | Banco de dados | Conta grátis no [supabase.com](https://supabase.com) (3 chaves + connection string) |
 | IA | Chave da [Anthropic](https://console.anthropic.com) |
@@ -105,7 +107,7 @@ Owner/Admin. Não dá para hospedar vários clientes numa conta só.
 - **4 GB RAM recomendados.** A imagem é pré-buildada, então o servidor não compila nada e a
   stack SOBE com 2 GB — mas operar é outra coisa: são 7 contêineres, e o WAHA consome
   ~150 MB por sessão de WhatsApp além de ~300 MB de overhead do Node. Com 2 GB você roda
-  no limite e vai precisar de swap. Ver `docs/runbooks/waha-hostgator.md`.
+  no limite e vai precisar de swap. Ver `docs/runbooks/waha-vps.md`.
 - Portas **80** e **443** abertas (`ufw allow 80,443,22/tcp`).
 - Docker + Docker Compose v2 — o `install.sh` instala o Docker sozinho se faltar (ver acima).
 

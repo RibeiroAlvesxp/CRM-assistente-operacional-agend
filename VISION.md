@@ -59,8 +59,8 @@ Os pedidos de feature dessa comunidade empurraram o produto na direção que hoj
 ## Modelo do projeto (sem letra miúda)
 
 - **O software é 100% open source (MIT), completo, sem versão paga.** Não vendemos assinatura. Não existe feature travada.
-- **A monetização é por infraestrutura:** o projeto é desenvolvido em parceria com a **HostGator** — o caminho recomendado de produção é a VPS deles (datacenter em São Paulo), instalada pelo `hostgator-setup-kit` com 1 comando. Assinar pelo link de parceiro apoia o projeto e sai mais barato pra quem assina.
-- **O caminho genérico nunca é sabotado:** `docker compose` e o kit self-host funcionam em qualquer VPS. A parceria é o caminho recomendado, nunca o único. (Regra de ouro do open source sustentável: percepção de pegadinha mata a marca.)
+- **A monetização é por infraestrutura:** a **Hostinger** é a hospedagem recomendada para o caminho self-host, com o cupom `THALENA` para novas contas nos planos anuais de VPS. O projeto continua sem assinatura ou funcionalidades pagas.
+- **O caminho genérico nunca é sabotado:** `docker compose` e o `setup-kit` funcionam em qualquer VPS. A recomendação nunca é o único caminho. (Regra de ouro do open source sustentável: percepção de pegadinha mata a marca.)
 
 ## Princípios de comunicação
 
@@ -68,7 +68,7 @@ Os pedidos de feature dessa comunidade empurraram o produto na direção que hoj
 2. **Mostrar, não descrever.** Screenshot/GIF do produto no primeiro scroll de qualquer página.
 3. **Âncora explícita.** "Alternativa open source a X" aparece no About do GitHub, no README e no site — é assim que a demanda dos incumbentes nos encontra (busca e LLMs).
 4. **E-commerce é exemplo, não definição.** Ao citar casos de uso, sempre em lista multi-nicho ("e-commerce, clínicas, imobiliárias...").
-5. **Transparência de modelo.** Parceria HostGator e telemetria declaradas em linguagem humana no README, nunca escondidas.
+5. **Transparência de modelo.** Recomendação de hospedagem, cupom e telemetria declarados em linguagem humana no README, nunca escondidos.
 
 ## Norte de 3 anos
 

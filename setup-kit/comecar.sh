@@ -9,14 +9,14 @@
 #
 # Uso:
 #   bash comecar.sh
-#   curl -fsSL https://raw.githubusercontent.com/melgarafael/DeskcommCRM/main/hostgator-setup-kit/comecar.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/melgarafael/DeskcommCRM/main/setup-kit/comecar.sh | bash
 #
 set -euo pipefail
 
 REPO_URL="${REPO_URL:-https://github.com/melgarafael/DeskcommCRM.git}"
-# Link de parceria com a HostGator. Mesma URL e mesmo rótulo do README: uma
-# promessa só, num lugar só — duas redações da mesma oferta viram duas ofertas.
-VPS_URL="https://www.hostgator.com.br/52708-141-3-52.html"
+# Oferta recomendada no README. Uma promessa só, num lugar só — duas redações
+# da mesma oferta viram duas ofertas.
+VPS_URL="https://www.hostg.xyz/SHJ5B"
 COMUNIDADE_URL="https://lp-comunidade.automatiklabs.com.br"
 
 # ── Aparência ───────────────────────────────────────────────────────────────
@@ -112,31 +112,30 @@ abrir() {
 }
 
 # ── O que contratar ─────────────────────────────────────────────────────────
-# Os números não são chute: saem de docs/runbooks/waha-hostgator.md, que é o
-# ambiente onde o CRM é operado de verdade. Nomear o PLANO é o que mais importa
-# aqui — "2 vCPU / 4 GB" ainda deixa a pessoa escolhendo entre seis caixinhas no
-# site, e escolher errado é descobrir o problema semanas depois, com o WhatsApp
-# caindo por falta de memória.
+# Os requisitos saem do runbook de produção. Eles descrevem recursos, não um
+# plano comercial específico, para que continuem válidos conforme o catálogo da
+# hospedagem muda.
 mostrar_requisitos() {
   cat <<REQ
 
   O CRM roda 24 horas por dia, com o WhatsApp junto. Para isso ele precisa de:
 
-    • Plano VPS Turing (ou superior) — 2 vCPU e 4 GB de RAM
-      O plano Cartesius (1 vCPU / 2 GB) NÃO dá conta: o WhatsApp usa cerca de
-      150 MB por número conectado, e a stack inteira não cabe.
+    • VPS com pelo menos 2 vCPU e 4 GB de RAM
+      1 vCPU / 2 GB não dá conta: o WhatsApp usa cerca de 150 MB por número
+      conectado, e a stack inteira não cabe.
     • 80 GB de disco
     • Ubuntu 22.04 LTS ou 24.04 LTS
     • Datacenter em São Paulo — é o que segura a latência do WhatsApp no Brasil
 
   Onde contratar:
 
+       Hostinger (hospedagem recomendada; cupom THALENA)
        ${VPS_URL}
 
 REQ
-  c_dim "  Esse é um link de parceria: assinar por ele sai com desconto e ajuda a"
-  c_dim "  manter o projeto. O CRM é MIT e roda em qualquer servidor — se você já"
-  c_dim "  tem um, ou prefere outro provedor, funciona igual."
+  c_dim "  Use o cupom THALENA para 10% OFF nos planos anuais de VPS (contas novas)."
+  c_dim "  O CRM é MIT e roda em qualquer servidor — se você já tem um, ou prefere"
+  c_dim "  outro provedor, funciona igual."
   printf '\n'
 }
 
@@ -147,7 +146,7 @@ comando_de_instalacao() {
 
        git clone ${REPO_URL} deskcommcrm
        cd deskcommcrm
-       bash hostgator-setup-kit/install.sh
+       bash setup-kit/install.sh
 
   O instalador cuida do resto: instala o Docker se faltar, cria o banco,
   configura o domínio com HTTPS e sobe o CRM. Ele pergunta o que só você sabe

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# DeskcommCRM — instalador self-host para VPS (HostGator).
+# DeskcommCRM — instalador self-host para VPS (Hostinger).
 #
 # Idempotente: pode rodar de novo sem estragar nada. Dependências no host:
 # só docker, docker compose, git, openssl, curl. psql/bootstrap rodam via Docker.
@@ -145,7 +145,7 @@ show_recovery() {
   printf '  %s\n' "cd ${dir}"
   printf '  %s\n' "rm -f .env                                    # apaga a configuração digitada"
   printf '  %s\n' "docker compose $(dc_files) down -v          # derruba o que subiu"
-  printf '  %s\n' "bash ${KIT_DIR:-hostgator-setup-kit}/install.sh   # começa de novo"
+  printf '  %s\n' "bash ${KIT_DIR:-setup-kit}/install.sh   # começa de novo"
   printf '\n%s\n' "Se o schema chegou a ser aplicado e você quer o banco limpo de novo,"
   printf '%s\n'   "abra o Supabase > SQL Editor e rode (ATENÇÃO: apaga todos os dados):"
   printf '  %s\n\n' "drop schema public cascade; create schema public;"
@@ -775,7 +775,7 @@ step "Verificando dependências"
 # VPS "cru" (Hetzner, DigitalOcean, Contabo…) não vem com Docker. Antes isto era
 # um beco sem saída: o script morria dizendo "instale antes de continuar" e a
 # pessoa — que por definição não é técnica — ficava sem saber como. Hospedagens
-# com template (Hostinger, HostGator) já trazem Docker, então o caso nunca
+# com template (Hostinger, Hostinger) já trazem Docker, então o caso nunca
 # aparecia para quem escreveu o kit.
 #
 # O instalador oficial do Docker é o mesmo comando da documentação deles; não
@@ -824,7 +824,7 @@ if [ -r /proc/meminfo ]; then
   if ram_abaixo_do_recomendado "$mem_kb"; then
     c_ylw "⚠ Este servidor tem ~$((mem_kb/1024))MB de RAM. O CRM sobe, mas fica no limite:"
     c_ylw "  são 7 contêineres e o WhatsApp usa ~150MB por número conectado."
-    c_ylw "  Adicione swap antes de operar — ver docs/runbooks/waha-hostgator.md."
+    c_ylw "  Adicione swap antes de operar — ver docs/runbooks/waha-vps.md."
   fi
 fi
 
@@ -1021,7 +1021,7 @@ e, se for mesmo um Traefik, ponha REVERSE_PROXY=traefik no .env e rode de novo."
       printf '%s\n'     "  Na prática: o CRM que está no ar passaria a rodar com o .env DESTA pasta"
       printf '%s\n\n'   "  (outro banco, outras chaves), e as conexões de WhatsApp cairiam."
       printf '%s\n'     "  Quer atualizar o que já existe? Use aquela pasta:"
-      printf '%s\n\n'   "       cd ${dono_arvore} && bash hostgator-setup-kit/update.sh"
+      printf '%s\n\n'   "       cd ${dono_arvore} && bash setup-kit/update.sh"
       printf '%s\n'     "  Quer mesmo uma SEGUNDA instalação nesta VPS? Ela precisa de nome de"
       printf '%s\n'     "  projeto e domínio próprios — ponha no .env desta pasta, antes de rodar:"
       printf '%s\n\n'   "       COMPOSE_PROJECT_NAME=deskcomm-$(basename "${_minha_arvore}" | tr 'A-Z' 'a-z')-2"
@@ -1038,7 +1038,7 @@ e, se for mesmo um Traefik, ponha REVERSE_PROXY=traefik no .env e rode de novo."
     printf '%s\n\n'   "  segundo proxy nelas não funciona: o Docker recusa e a instalação para."
     printf '%s\n'     "  Como resolver, na ordem do mais provável:"
     printf '\n%s\n'   "  1. Já é outro DeskcommCRM neste servidor? Então use aquele — entre na"
-    printf '%s\n'     "     pasta dele e rode: bash hostgator-setup-kit/update.sh"
+    printf '%s\n'     "     pasta dele e rode: bash setup-kit/update.sh"
     printf '\n%s\n'   "  2. Não usa mais o que está ocupando? Desligue e rode este instalador de novo:"
     [ -n "$dono_portas" ] && printf '%s\n' "       docker stop ${dono_portas}"
     printf '\n%s\n'   "  3. Quer manter os dois no ar? Aí o CRM tem de sair por um proxy só, e isso"
@@ -1214,7 +1214,7 @@ elif [ -n "$VERSAO_ALVO" ]; then
   # calado: o dono precisa saber que duas peças dele saíram do fonte local.
   c_ylw "⚠ As imagens do worker e do agendador ainda não estão publicadas."
   c_ylw "  Elas serão construídas neste servidor — leva alguns minutos a mais."
-  c_ylw "  Rode 'bash hostgator-setup-kit/update.sh' quando a próxima versão sair."
+  c_ylw "  Rode 'bash setup-kit/update.sh' quando a próxima versão sair."
 else
   # Falha ABERTA: sem rede ou sem tag no remoto, segue como antes. Travar a
   # instalação por não resolver um número seria trocar previsibilidade por
@@ -1222,7 +1222,7 @@ else
   # num canal móvel em vez de numa versão.
   VERSAO_ALVO="latest"
   c_ylw "⚠ Não consegui descobrir a última versão publicada (rede?)."
-  c_ylw "  Instalando pelo canal 'latest'. Depois rode: bash hostgator-setup-kit/update.sh"
+  c_ylw "  Instalando pelo canal 'latest'. Depois rode: bash setup-kit/update.sh"
 fi
 IMAGEM_APP_DEFAULT="${IMG_APP}:${VERSAO_ALVO}"
 
@@ -1852,7 +1852,7 @@ $(sed 's/^/    /' "$PENDENCIA_EMAIL")
   Depois é só salvar — não precisa reiniciar nada aqui.
 
   Para o instalador fazer isso sozinho da próxima vez, rode
-  \`bash hostgator-setup-kit/install.sh\` de novo e informe o token de
+  \`bash setup-kit/install.sh\` de novo e informe o token de
   acesso quando ele perguntar (supabase.com/dashboard/account/tokens).
 PEND
 }
@@ -2069,7 +2069,7 @@ $(pendencia_dos_emails)
 
   4. Ao terminar o onboarding, o CRM pede a verificação em duas etapas:
        tenha o Google Authenticator/Authy à mão e GUARDE os códigos de
-       recuperação que aparecem. Perdeu o celular? bash hostgator-setup-kit/reset-mfa.sh ${OWNER_EMAIL}
+       recuperação que aparecem. Perdeu o celular? bash setup-kit/reset-mfa.sh ${OWNER_EMAIL}
 
 $(c_grn "  ─── A comunidade ──────────────────────────────────────")
 
@@ -2085,9 +2085,9 @@ $(c_grn "  ─── A comunidade ───────────────�
   Comandos úteis:
     ver logs:      docker compose $(dc_files) logs -f app
     reiniciar:     docker compose $(dc_files) restart
-    atualizar:     bash hostgator-setup-kit/update.sh
-    backup:        bash hostgator-setup-kit/backup.sh
-    trocar config: bash hostgator-setup-kit/install.sh
+    atualizar:     bash setup-kit/update.sh
+    backup:        bash setup-kit/backup.sh
+    trocar config: bash setup-kit/install.sh
                    (mostra tudo o que você respondeu e deixa corrigir por número)
     recomeçar:     docker compose $(dc_files) down -v && rm -f .env
                    (derruba tudo; depois rode o install.sh de novo)
